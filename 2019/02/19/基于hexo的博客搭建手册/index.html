@@ -201,7 +201,8 @@
 <p>注意：在安装主题的时候，需要将下载的主题源代码，放在了themes文件下的相应主题名文件夹下，否则会导致了一些文件路径出错</p>
 <h5 id="下载完成后，修改配置文件"><a href="#下载完成后，修改配置文件" class="headerlink" title="下载完成后，修改配置文件"></a>下载完成后，修改配置文件</h5><p>修改 blog 根目录的 _config.yml ,将 theme 的值修改为主题名</p>
 <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">     vim _config.yml</span><br><span class="line">	 ...</span><br><span class="line">	 <span class="meta"># Extensions</span></span><br><span class="line"><span class="symbol">	 theme:</span> maupassant</span><br></pre></td></tr></table></figure>
-<p>注意:某些主题依赖 jade 和 sass 插件,所以在配置好主题后,还要进行安装插件<br>建议：安装上比较好，如果以后使用的某个主题需要该插件，就可以不必再安装了</p>
+<p>注意:某些主题依赖 jade 和 sass 插件,所以在配置好主题后,还要进行安装插件</p>
+<p>建议：安装上比较好，如果以后使用的某个主题需要该插件，就可以不必再安装了</p>
 <p>安装插件：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">      npm <span class="keyword">install</span> hexo-renderer-jade <span class="comment">--save</span></span><br><span class="line">      npm <span class="keyword">install</span> hexo-renderer-sass <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
 <h5 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h5><p>清空缓存,然后启动服务器,在本地浏览器输入 localhost:4000 ,查看博客效果</p>
