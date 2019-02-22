@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ningxb 的博客">
+    <meta name="keyword" content="tencent">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        基于wordpress的博客搭建手册 - Ningxb 的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Pursue your own happiness </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>kidzhang</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#个人博客搭建"><span class="toc-text">个人博客搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一步："><span class="toc-text">第一步：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#申请服务器及域名"><span class="toc-text">申请服务器及域名</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二步"><span class="toc-text">第二步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安装及配置-PHP、apache-和-MYSQL-的环境"><span class="toc-text">安装及配置 PHP、apache 和 MYSQL 的环境</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三步"><span class="toc-text">第三步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安装-wordpress"><span class="toc-text">安装 wordpress</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第四步"><span class="toc-text">第四步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#设置-wordpress-的相关条件"><span class="toc-text">设置 wordpress 的相关条件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结尾"><span class="toc-text">结尾</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#感谢"><span class="toc-text">感谢</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Pursue your own happiness </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        基于wordpress的博客搭建手册
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-01-01 09:47:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#wordpress" title="wordpress">wordpress</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#blog" title="blog">blog</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h1 id="个人博客搭建"><a href="#个人博客搭建" class="headerlink" title="个人博客搭建"></a>个人博客搭建</h1><h3 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h3><h4 id="申请服务器及域名"><a href="#申请服务器及域名" class="headerlink" title="申请服务器及域名"></a>申请服务器及域名</h4><p>1.你需要一个服务器和域名（以腾讯云为例）</p>
+<p>2.申请域名：</p>
+<p>进入腾讯云首页（console.qcloud.com），点击云产品 –&gt; 云服务器 –&gt;选择新建一台云主机（系统选用：ubuntu），并按照自己的需要设置</p>
+<p>创建完成后，系统会自动分配给你相应的公网 IP 和内网 IP 例：123.206.xx.xx [公]10.141.xx.xx[内]）</p>
+<p>3.域名申请：</p>
+<p>返回腾讯云首页，点击云产品 –&gt; 域名管理 –&gt;域名注册（注册的新域名会再提交的一两天后，得到腾讯的认证）</p>
+<p>域名注册成功后，点击你的域名右方的 “解析” ，将记录类型的 A 的记录值，改为你的公网 IP.</p>
+<p>服务器和域名这两个前提条件解决后，面对这个“崭新”的服务器，是时候给他配置装备了</p>
+<h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><h4 id="安装及配置-PHP、apache-和-MYSQL-的环境"><a href="#安装及配置-PHP、apache-和-MYSQL-的环境" class="headerlink" title="安装及配置 PHP、apache 和 MYSQL 的环境"></a>安装及配置 PHP、apache 和 MYSQL 的环境</h4><p>附：此部分可以忽略，但小宝建议你还是装上 本部分转自 <a href="http://code.leozhang2018.me" target="_blank" rel="noopener">[一个你非常值得看的博客]</a></p>
+<p>此处介绍 OhMyzsh</p>
+<p>ZSH 是一个 Unix Shell ，它在兼容标准的 POSIX （对于小宝这种小白来说，它最吸引我的功能就是命令补全错误纠正、简写和漂亮的界面主题）</p>
+<p>Zsh 很好很强大,但是由于其配置起来过于繁琐复杂,严重的影响使用效率，所以 OhMyzsh 应用而生</p>
+<p>OhMyzsh 的好处太多了，小宝就不一一列举了，直接上安装手法</p>
+<p>附1.安装 OhMyzsh 前，必须安装 Zsh、curl、git 等 [别问小宝为什么，因为这是最简单的方法，如果你想深入快去看上面那个博客]</p>
+<p>附2.首先安装 Zsh,打开 terminal 命令：sudo apt-get install zsh [这可是必须的，小宝第一次就直接装了OhMyzsh 结果呢 自然是被嘲讽了]</p>
+<p>附3.接着安装 curl, 命令 sudo apt-get install curl</p>
+<p>附4.然后安装 git, 命令 sudo apt-get install git</p>
+<p>附5.最后安装 ohmyzsh, 命令: curl -L <a href="http://install.ohmyz.sh" target="_blank" rel="noopener">http://install.ohmyz.sh</a> | sh  [终于可以安装了]</p>
+<p>附6.终于安装完成了 T_T .赶快切换默认 shell 为 zsh : chsh -s /bin/zsh </p>
+<p>附7.看到了 linux 的命令行，瞬间漂亮了有么有！！ 再告诉你默认主题是 robbyrussell ，可这不是唯一选择哦</p>
+<p>主要参考网站：<a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-14-04" target="_blank" rel="noopener">LAMP的安装教程</a></p>
+<p>使用 Xshell5 等软件，远程登陆自己的服务器。</p>
+<p>1.对服务器的软件源进行功能更新：sudo apt-get update   [更新软件源]</p>
+<p>2.对服务器的系统软件进行功能升级：sudo apt-get upgrade  [更新所有的软件]</p>
+<p>小小解析一下：</p>
+<p>apt-get update ： 访问源列表里的每个网址，并读取软件列表，然后保存在本地电脑</p>
+<p>apt-get upgrade ： 会把本地已安装的软件，与刚下载的软件列表里对应软件进行对比，如果发现已安装的软件版本太低，就会更新该软件</p>
+<p>3.安装 apache </p>
+<blockquote>
+<p>命令：sudo apt-get install apache2 （附：一路 Y 下去就好）</p>
+</blockquote>
+<p>安装完后，可通过访问自己的公网 IP ，若出现 Apache2 Ubuntu Default Page 页面，证明 apache 安装完成</p>
+<p>4.安装 MYSQL </p>
+<blockquote>
+<p>命令： sudo apt-get install mysql-server php5-mysql</p>
+</blockquote>
+<blockquote>
+<p>命令：sudo mysql_secure_installation  可以提高数据库的安全性</p>
+</blockquote>
+<p>出现 MYSQL 的安装界面，按提示输入 root密码（并确认密码）；</p>
+<p>Change the root password 选择 n  [是否修改 MYSQL 的 root 用户的密码]</p>
+<p>Remove anonymous users 选择 n  [是否移除匿名用户]</p>
+<p>Disallow root login remotely 选择 n  [不允许 root 用户的远程登陆数据库]</p>
+<p>Remove test database and access to it 选择 n  [移除初始的test数据库（其实都行）]</p>
+<p>Reload privilege tables now 选择 Y [现在重新加载权限表] （注意哦，这个是 Y）</p>
+<p>5.安装 PHP</p>
+<blockquote>
+<p>命令： sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt （附： Y 下去就好）</p>
+</blockquote>
+<p>安装完成后，修改 apache 的配置文件，使 apache 执行文件的优先级改变（即:提高 index.php 的优先级）</p>
+<p>命令 ： sudo vim /etc/apache2/mods-enabled/dir.conf</p>
+<p>修改前：</p>
+<p><code>&lt;IfModule mod_dir.c&gt;</code></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`    DirectoryIndex index<span class="selector-class">.html</span> index<span class="selector-class">.cgi</span> index<span class="selector-class">.pl</span> index<span class="selector-class">.php</span> index<span class="selector-class">.xhtml</span> index<span class="selector-class">.htm</span> `</span><br></pre></td></tr></table></figure>
+<p><code>&lt;/IfModule&gt;</code></p>
+<hr>
+<p>修改后：</p>
+<p><code>&lt;IfModule mod_dir.c&gt;</code></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`    DirectoryIndex index<span class="selector-class">.php</span> index<span class="selector-class">.html</span> index<span class="selector-class">.cgi</span> index<span class="selector-class">.pl</span> index<span class="selector-class">.xhtml</span> index<span class="selector-class">.htm</span> `</span><br></pre></td></tr></table></figure>
+<p><code>&lt;/IfModule&gt;</code></p>
+<p>修改完成后,保存文件 :wq (保存修改并推出), PHP 的安装大体完成，</p>
+<p>若你想使用 PHP 的命令行，使用命令： sudo apt-get install php5-cli</p>
+<p>检测 PHP 安装是否正确</p>
+<p>编写 index.php 文件（附：检测万要记得删，否则回合以后重名）</p>
+<p>内容为：<code>&lt;?php phpinfo();?&gt;</code></p>
+<p>访问自己的公网 IP，显示 php 首页，说明安装正常。</p>
+<h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><h4 id="安装-wordpress"><a href="#安装-wordpress" class="headerlink" title="安装 wordpress"></a>安装 wordpress</h4><p>1.首先从 <a href="https://cn.wordpress.org/" target="_blank" rel="noopener">wordpress 的中文官网</a>,下载最新版的 wordpress 4.5.3</p>
+<p>2.利用 FileZilla Client 等软件，将 wordpress 4.5.3 的压缩包上传到服务器</p>
+<p>3.我的天,这个压缩包是 ZIP 的, tar 命令不能接zip的压缩包，那怎么解压缩呢？ 没办法，只能安装新工具 zip</p>
+<p>命令 ：sudo apt-get install zip</p>
+<p>安装完成后 ：使用命令 ：unzip -b wordpress4.5.3.zip 解压到 /var/www/html 目录下 </p>
+<p>附：小宝对 zip 的命令不是很熟，有兴趣的小伙伴可以自己去看 zip/unzip 的参数及作用，这里我不多说了</p>
+<p>解压完成后，</p>
+<h3 id="第四步"><a href="#第四步" class="headerlink" title="第四步"></a>第四步</h3><h4 id="设置-wordpress-的相关条件"><a href="#设置-wordpress-的相关条件" class="headerlink" title="设置 wordpress 的相关条件"></a>设置 wordpress 的相关条件</h4><p>1.使用 MYSQL 建立一个 名字为 wordpress 的数据库（别名也可以，但小宝不建议你这么做）</p>
+<p>命令 ： mysql -u root -p  输入用户密码</p>
+<p>建立数据库 ： create database wordpress</p>
+<p>2.建立完成后，在 wordpress 的注册界面，按提示填写你的信息，将自动生出数据库信息</p>
+<p>3.将生成的信息写入新建的 wp_config.php 替换 wp_config.example.php,接着点击“立即安装”,此时你的个人博客已经搭好了</p>
+<p>4.再次访问你的公网 IP，是不是有一点小激动，第一次我也是这样（害羞），</p>
+<p>5.进入设置，常规选项修改 wordpress 的 URL 和站点地址 URL 为你的域名，固定连接选项修改固定链接设置为朴素 </p>
+<p>6.最后再说一点吧，将下载的 wordpress 解压到 theme 文件夹中，就可以应用这个主题了哦</p>
+<h3 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h3><h4 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h4><p>这是小宝第一次写东西，如果你看完了，那真的很感谢你，小宝知道自己还有很大的不足，但小宝愿意在以后的道路中，不断充实自己，写出更好更易懂的文章与大家分享。</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank" href="https://github.com/Ningxiaobao">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

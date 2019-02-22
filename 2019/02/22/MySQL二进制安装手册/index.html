@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ningxb 的博客">
+    <meta name="keyword" content="tencent">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        MySQL二进制安装手册 - Ningxb 的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Pursue your own happiness </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>kidzhang</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装部分"><span class="toc-text">安装部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-建账户"><span class="toc-text">1.建账户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mysql-基本安装"><span class="toc-text">2.mysql 基本安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-创建数据目录"><span class="toc-text">3.创建数据目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-添加用户-bin-目录到全局-bin-执行目录-即-全局使用-mysql-相关命令"><span class="toc-text">4.添加用户 bin 目录到全局 bin 执行目录 [即:全局使用 mysql 相关命令]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-准备-my-cnf"><span class="toc-text">5.准备 my.cnf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-初始化"><span class="toc-text">6.初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-检查error-log"><span class="toc-text">7.检查error.log</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用部分"><span class="toc-text">使用部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-启动-mysql"><span class="toc-text">1.启动 mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-检查有否-error"><span class="toc-text">2.检查有否 error</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-获取随机密码"><span class="toc-text">3.获取随机密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-登陆-mysql"><span class="toc-text">4.登陆 mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-修改密码"><span class="toc-text">5.修改密码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关闭Mysql"><span class="toc-text">关闭Mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过-mysqladmin-关闭数据库"><span class="toc-text">通过 mysqladmin 关闭数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过-mysql-关闭数据库"><span class="toc-text">通过 mysql 关闭数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看结果"><span class="toc-text">查看结果</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Pursue your own happiness </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        MySQL二进制安装手册
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-02-22 09:45:58</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="安装部分"><a href="#安装部分" class="headerlink" title="安装部分"></a>安装部分</h2><h3 id="1-建账户"><a href="#1-建账户" class="headerlink" title="1.建账户"></a>1.建账户</h3><p><code>groupadd mysql</code></p>
+<p><code>useradd -g mysql -d /usr/local/mysql -s /sbin/nologin -M mysql</code></p>
+<p>-g&lt;群组&gt;：指定用户所属的群组</p>
+<p>-d&lt;登入目录&gt;：指定用户登入时的启始目录；</p>
+<p>-s<shell>：指定用户登入后所使用的shell；</shell></p>
+<p>-M：不要自动建立用户的登入目录；</p>
+<h3 id="2-mysql-基本安装"><a href="#2-mysql-基本安装" class="headerlink" title="2.mysql 基本安装"></a>2.mysql 基本安装</h3><p><code>apt-get install libaio1</code></p>
+<p> libaio是Linux下的一个异步非阻塞接口,它提供了以异步非阻塞方式来读写文件的方式,读写效率比较高</p>
+<p><code>mkdir /opt/mysql</code></p>
+<p><code>cd /opt/mysql/</code></p>
+<p>/usr：系统级的目录，可以理解为C:/Windows/</p>
+<p>/usr/lib理解为C:/Windows/System32</p>
+<p>/usr/local：用户级的程序目录，可以理解为C:/Progrem Files/。用户自己编译的软件默认会安装到这个目录下。</p>
+<p>/opt：用户级的程序目录，可以理解为D:/Software</p>
+<p>/usr/src：系统级的源码目录。</p>
+<p>/usr/local/src：用户级的源码目录。</p>
+<p><code>wget https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz</code></p>
+<p><code>tar zxvf mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz</code></p>
+<p><code>ln -s /opt/mysql/mysql-5.7.20-linux-glibc2.12-x86_64 /usr/local/mysql</code></p>
+<p>建立软连接到 mysql 用户起始目录</p>
+<p><code>chown -R mysql:mysql /usr/local/mysql</code></p>
+<p>将目录 /usr/local/mysql 的数组和所属用户均修改为 mysql</p>
+<h3 id="3-创建数据目录"><a href="#3-创建数据目录" class="headerlink" title="3.创建数据目录"></a>3.创建数据目录</h3><p><code>mkdir -p /data/mysql/mysql3306/{data,logs,tmp}</code></p>
+<p><code>chown -R mysql:mysql /data/mysql/mysql3306/</code></p>
+<h3 id="4-添加用户-bin-目录到全局-bin-执行目录-即-全局使用-mysql-相关命令"><a href="#4-添加用户-bin-目录到全局-bin-执行目录-即-全局使用-mysql-相关命令" class="headerlink" title="4.添加用户 bin 目录到全局 bin 执行目录 [即:全局使用 mysql 相关命令]"></a>4.添加用户 bin 目录到全局 bin 执行目录 [即:全局使用 mysql 相关命令]</h3><p><code>echo &quot;export PATH=$PATH:/usr/local/mysql/bin&quot;&gt;&gt;/etc/profile</code></p>
+<p><code>source /etc/profile</code></p>
+<h3 id="5-准备-my-cnf"><a href="#5-准备-my-cnf" class="headerlink" title="5.准备 my.cnf"></a>5.准备 my.cnf</h3><p>上传一份 my3306.cnf 到 /data/mysql/mysql3306/</p>
+<h3 id="6-初始化"><a href="#6-初始化" class="headerlink" title="6.初始化"></a>6.初始化</h3><p><code>mysqld --defaults-file=/data/mysql/mysql3306/my3306.cnf --initialize</code></p>
+<h3 id="7-检查error-log"><a href="#7-检查error-log" class="headerlink" title="7.检查error.log"></a>7.检查error.log</h3><p><code>cat /data/mysql/mysql3306/data/error.log</code></p>
+<h2 id="使用部分"><a href="#使用部分" class="headerlink" title="使用部分"></a>使用部分</h2><h3 id="1-启动-mysql"><a href="#1-启动-mysql" class="headerlink" title="1.启动 mysql"></a>1.启动 mysql</h3><p><code>mysqld --defaults-file=/data/mysql/mysql3306/my3306.cnf &amp;</code></p>
+<h3 id="2-检查有否-error"><a href="#2-检查有否-error" class="headerlink" title="2.检查有否 error"></a>2.检查有否 error</h3><p><code>cat /data/mysql/mysql3306/data/error.log</code></p>
+<h3 id="3-获取随机密码"><a href="#3-获取随机密码" class="headerlink" title="3.获取随机密码"></a>3.获取随机密码</h3><p><code>cat /data/mysql/mysql3306/data/error.log|grep password</code></p>
+<h3 id="4-登陆-mysql"><a href="#4-登陆-mysql" class="headerlink" title="4.登陆 mysql"></a>4.登陆 mysql</h3><p><code>mysql  --defaults-file=/data/mysql/mysql3306/my3306.cnf  -S /tmp/mysql3306.sock -uroot -p</code></p>
+<h3 id="5-修改密码"><a href="#5-修改密码" class="headerlink" title="5.修改密码"></a>5.修改密码</h3><p><code>alter user user() identified by &#39;xmm&#39;;</code><br>或<br><code>set password = password(&#39;xxx&#39;);</code></p>
+<h2 id="关闭Mysql"><a href="#关闭Mysql" class="headerlink" title="关闭Mysql"></a>关闭Mysql</h2><p><code>ps aux |grep mysql |grep -v grep</code></p>
+<p><code>ss -tnl |grep 3306</code></p>
+<h3 id="通过-mysqladmin-关闭数据库"><a href="#通过-mysqladmin-关闭数据库" class="headerlink" title="通过 mysqladmin 关闭数据库"></a>通过 mysqladmin 关闭数据库</h3><ol>
+<li><code>/usr/local/mysql/bin/mysqladmin -u root -p123456 -S /tmp/mysql3306.sock shutdown</code></li>
+</ol>
+<h3 id="通过-mysql-关闭数据库"><a href="#通过-mysql-关闭数据库" class="headerlink" title="通过 mysql 关闭数据库"></a>通过 mysql 关闭数据库</h3><ol start="2">
+<li><code>mysql -S /tmp/mysql3306.sock -u root -p123456 -e &#39;shutdown&#39;</code></li>
+</ol>
+<h3 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h3><p><code>ss -tnl |grep 3306</code></p>
+<p><code>ps aux |grep mysql |grep -v grep</code></p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank" href="https://github.com/Ningxiaobao">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
