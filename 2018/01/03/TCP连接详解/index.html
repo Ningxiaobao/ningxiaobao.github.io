@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ningxb 的博客">
+    <meta name="keyword" content="tencent">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        TCP连接详解 - Ningxb 的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Pursue your own happiness </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>kidzhang</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#学习TCP有感"><span class="toc-text">学习TCP有感</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP-连接"><span class="toc-text">TCP 连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#建立连接："><span class="toc-text">建立连接：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#传输过程："><span class="toc-text">传输过程：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#断开连接"><span class="toc-text">断开连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#结尾"><span class="toc-text">结尾</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Pursue your own happiness </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        TCP连接详解
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-01-03 21:45:36</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#NET" title="NET">NET</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="学习TCP有感"><a href="#学习TCP有感" class="headerlink" title="学习TCP有感"></a>学习TCP有感</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>小宝最近看了一本名叫 《wireshark 网络分析就是这么简单》 的书，该书使用 wireshark 抓取网络包，分析每个包的含义，从而更直观的理解协议的本质。小宝大约花了4天的时间，看完此书，自己感悟最大的地方就是 TCP 协议部分，所以就不废话了，直接上感悟</p>
+<h4 id="TCP-连接"><a href="#TCP-连接" class="headerlink" title="TCP 连接"></a>TCP 连接</h4><p>这里小宝就不对 TCP 的定义做介绍了，大家可以自行 google ，但大家要知道 TCP 是有保障（即:建立连接)的传输层协议。</p>
+<ol>
+<li><h4 id="建立连接："><a href="#建立连接：" class="headerlink" title="建立连接："></a>建立连接：</h4><p>建立连接时，需要经过三次握手</p>
+<p><img src="http://n1.cmsfile.pg0.cn/group1/M00/1A/7E/Cgqg2FZAQK-AKig6AAB4dr6gkoY992.jpg" alt="三次握手"> </p>
+<p>由上图可知：</p>
+<p>TCP 的第一次握手是由客户端向服务器发送的 标志位为 SYN=1（连接标志位） seq=J（数据段序号） len=0（携带报文个数）</p>
+<p>TCP 的第二次握手是由服务器向客户端发送的 标志位为 SYN=1 ACK=1（确认标识位） seq=K ack=J+1 len=0 </p>
+<p>TCP 的第三次握手是由客户端向服务器发送的 标志位为 ACK=1 seq=J+1 ack=k+1 len=0</p>
+<p>白话解释：</p>
+<p>第一次：客户端;我能和你连接吗？我的初始序号是 J，如果你应答就 ack=J+1</p>
+<p>第二次：服务端：收到了，ack=J+1,我也想和你建立连接，我的初始序号是 K,如果你答应就 ack =K+1</p>
+<p>第三次：客户端：收到了，ack =k+1</p>
+<p>注意:SYN 包，虽然 len =0但是会消耗一个序号，但 ACK 包，如果 len=0,则不会消耗序号（即:可以使用同一个包重复确认）</p>
+</li>
+<li><h4 id="传输过程："><a href="#传输过程：" class="headerlink" title="传输过程："></a>传输过程：</h4><p>传输数据，对于 TCP 在传输数据这部分，小宝主要要讲 MTU（最大传输单元）、Win（发送窗口）、超时重传、快速恢复等</p>
+<p>1.MTU（最大传输单元）[1500字节] = MSS(TCP 包所携带的最大数据量)[一般为1460字节]+ TCP 报文头[20字节] + TP 报文头[20字节]</p>
+<p>  MSS决定发送方要讲一个大数据包要被分成多少个 TCP 分组，再进行发送</p>
+<p>2.滑动窗口机制</p>
+<p> 当用 wireshark 进行抓包时，包中的 WIN 的值不是指源地址发送窗口的大小，而是源地址向目的地址声明自己的接收窗口的大小，</p>
+<p> 当目的地址接收到该信息后，会将自己的发送窗口大小设定小于源地址的接收窗口的大小，（即：接收方的接收窗口大小决定发送方的发送窗口大小)</p>
+<p> Win（发送窗口）决定了发送方一口气能发多少字节</p>
+<p><code>附: 由于 TCP 刚被发发明是全世界网络都很小，所以最大接收窗口被定义为 65535 字节，但由于硬件的革命性进步，65535字节已成为瓶颈，</code></p>
+<p><code>而TCP 头只给接收窗口值留了 16 bit，故依靠 TCP 头肯定无法突破 65535，1992 年的 RFC 1323 中体提出的 Window Scale，Window Scale</code></p>
+<p><code>放在TCP 头之外的 Options 中。不需要改变 TCP 头的设计，Window Scale 是在 TCP 的三次握手阶段，向对方声明一个 Shift count,然后将</code></p>
+<p><code>Shift count 作为2的指数，在乘以 TCP 中第一的接受窗口，就可以得到真正的窗口（即：wireshark 包中 Calculated window size 的值）</code></p>
+<p><code>注意：有时候防火墙识别不了 Window Scale ，无法获得 Shift count，会导致接收方接收窗口过小，从而发送方的发送方发生窗口过小，造成</code></p>
+<p> <code>严重性能问题</code></p>
+<p>3.超时重传</p>
+<p>刚刚建立连接时，发送方不知道网络的状况，RFC 建议每收到 n 个确认就将用拥塞窗口加 n 个MSS，此过程称为慢启动阶段，公式 y=2^x (x&gt;0)</p>
+<p>当慢启动持续一段时间后。当拥塞窗口值达到临界窗口值时，退出慢启动阶段，RFC 建议每一个RTT（往返时间）拥塞窗口值增加 1，此过程称为拥塞避免阶段</p>
+<p>当在一个RTO(超时时间)未收到特定包，说明发生拥塞，特定包已丢失，于是进行超时重传</p>
+<p>注意:超时重传对传输性能有很严重的影响，原因：1.在 RTO 阶段不能传数据，2.在拥塞窗口急剧减小（这里你可以认为是发送窗口），以后传输很慢</p>
+<p>超时重传阶段，RFC 建议将拥塞窗口的值降到 1个 MSS，临界窗口定义为上次发生拥塞时发生窗口的一半，然后再次进入慢启动。[注意:临界窗口有分歧<br>]</p>
+<p><code>在《TCP/IP Illustrated》一书（此书发布与1999年以前）中临界窗口定义为上次发生拥塞时发生窗口的一半，而RFC 2581 参考了 Westwood+ 算法，将原先“拥塞窗口的一半”改为 FlightSize（已发送单位确认的数据量）的一半。（很可惜，现实与理想的差距很大，RFC 2581 并未像 Westwood+ 一样追
+求比较理想的窗口，而且还造成一个很大的问题了[即：小带宽网络丢包多，大带宽网络丢包少，但大带宽网络的临界窗口却小于小带宽网络]）</code></p>
+<p>4.快速恢复</p>
+<p>当网络出现轻微的阻塞时，少量数据包丢失，（即：存在包丢失，但后续的包仍能正常到达接收方），只不过接受方发现seq号比预期的大，所以接收方收到第一个seq号比预期的包时，它会ack一次期望的seq号（注意：这个包是ACK包），之后每收到一个包就ack一次期望的seq号（注意：这些包是Dup ACK包）,当发送发收到3个或3个以上的重复确认（Dup ACK包）【一定要注意这里是收到3个重复确认，不是收到3个ack（1个 ACK 和2个 Dup ACK）】,发送方意识到相应的包已丢失，从而立即重传他，该过程称为快速重传。</p>
+<p>这是这部分很重要的点哦，《TCP/IP Illustrated》一书中认为临界窗口定义为上次发生拥塞时发生窗口的一半，拥塞窗口也定义为上次发生拥塞时发生窗口的一半，接着进入拥塞避免阶段；而 RFC 5681 认为临界窗口定义为发生拥塞时还未被确认的数据量的一半（但不能小于2），然后拥塞窗口值定义为临界窗口指加上 3 个 MSS，接着进入拥塞避免阶段。</p>
+<p>既然要快速恢复，怎么才能快速呢？这必然要经历进化嘛。</p>
+<p>1.最初阶段：丢一个包，该包和之后的包都重传[我的天，这得花多少冤枉的资源啊]</p>
+<p>2.NewReno 方案：丢失一个包，接收方接到重传的该包时，回复下一个对丢失报的序号，然后发送方在重传，直至把丢失的包都补上[听起来比最初靠谱多了，可仔细想想，要是丢包量很大，那要花费对少个RTT（往返时间）啊]</p>
+<p>3.SACK 方案：（小宝现在学到的最好的恢复方法）接收方在请求丢失包的同时把收到的包号告诉发送方</p>
+<p>注意：是否启用 SACK实在 TCP 三次握手时协商决定的，只要双方一方没有发“SACK_PERM=1”,那该连接建立之后就不会用到 SACK</p>
+</li>
+</ol>
+   <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">让终端运行 SACK 的 命令： ` <span class="literal">no</span> -p -o <span class="attribute">sack</span>=1 `</span><br></pre></td></tr></table></figure>
+<p>   为什么规定要凑满3个 Dup ACK 呢？</p>
+<p>   是不是笨，因为网路包他本来就不安分，有时自己就会乱序，但因为乱序就重传的话，那我们岂不是它谨慎了（好浪费资源的），而且 Don’t worry,<br>   一般乱序的距离不会相差太大（说白了，就是不满足3个 Dup ACK）</p>
+<p>   5.延时确认</p>
+<p>   只是减少本部分确认包，减轻网络负担，并没有直接提高性能，有时候反而会影响性能    </p>
+<p>   6.Nagle 算法[缓冲机制,作用是将一个往返时间里生成的小数据收集起来，凑满一个 MSS 或者等收到确认后在发送]</p>
+<p>   没有直接提高性能,启用它的作用只是提高传输效率，减轻网络负担，但某些场合也会影响性能，但很多软件默认关闭 Nagle </p>
+<ol start="3">
+<li><h4 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h4><p><img src="http://static.open-open.com/lib/uploadImg/20160919/20160919153347_419.jpg" alt="四次挥手">          </p>
+<p>由上图可知：（连接的示意图如图，ack 等的数据是小宝自己编的，与图中不一样，请见谅）</p>
+<p>TCP 的第一次挥手是由客户端向服务器发送的 标志位为  FIN=1 [(发端)发送完成标志位] ACK=1 seq=39 ack=55 len=0</p>
+<p>TCP 的第二次挥手是由服务器向客户端发送的 标志位为  ACK=1 seq=55 ack=40 len=0 </p>
+<p>TCP 的第三次挥手是由服务器向客户端发送的 标志位为  FIN=1 ACK=1 seq=55 ack=40 len=0</p>
+<p>TCP 的第三次挥手是由客户端向服务器发送的 标志位为  ACK=1 seq=40 ack=56 len=0</p>
+<p>白话解释：</p>
+<p>第一次：客户端;我希望断开连接（注意： FIN 标志）</p>
+<p>第二次：服务端：知道了，断开吧</p>
+<p>第三次：服务端：我这边的连接也想断开（注意： FIN 标志）</p>
+<p>第四次：客户端：知道了，断开吧</p>
+<p>附：其实四次挥手来断开连接也不完全可靠，世界上不存在 100% 可靠的通信机制，有兴趣的朋友可以研究一下著名的“两军问题”</p>
+</li>
+<li><h4 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h4><p>小宝，这次主要是想和大家分享一下 TCP 传输过程中，超时重传和快速回复这部分的小细节，而并没有着重讲解 TCP 的三次握手和四次挥手阶段。小宝尝试亲自去抓取超时重传和快速回复这两部分的包，从实际角度上论证自己的想法的正确性，但这些结论可能还是存在很大的局限性，望各位朋友能以包容的心态，提出小宝的不足，小宝会立刻查询纠正，努力的变黑~</p>
+<p> 我是泞小宝. 一个恐惧衰老、执着快乐的小鬼.</p>
+</li>
+</ol>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank" href="https://github.com/Ningxiaobao">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

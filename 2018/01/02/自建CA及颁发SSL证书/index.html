@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ningxb 的博客">
+    <meta name="keyword" content="tencent">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        自建CA及颁发SSL证书 - Ningxb 的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Pursue your own happiness </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg">
+        </div>
+        <div class="name">
+            <i>kidzhang</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基于-Ubuntu-系统下，自建-CA-及颁发-SSL-证书"><span class="toc-text">基于 Ubuntu 系统下，自建 CA 及颁发 SSL 证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用工具-openssl"><span class="toc-text">使用工具 openssl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#名词解释"><span class="toc-text">名词解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建证书"><span class="toc-text">创建证书</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#查看配置文件，了解-CA-环境。"><span class="toc-text">查看配置文件，了解 CA 环境。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#初始准备"><span class="toc-text">初始准备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成根密钥"><span class="toc-text">生成根密钥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#生成根证书"><span class="toc-text">生成根证书</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#为服务器生成-ssl-密钥-以-apache-服务器为例"><span class="toc-text">为服务器生成 ssl 密钥 [ 以 apache 服务器为例 ]</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#颁发-SSL-证书"><span class="toc-text">颁发 SSL 证书</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#为-apache-服务器生成证书签署请求"><span class="toc-text">为 apache 服务器生成证书签署请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CA-根据请求来签署证书"><span class="toc-text">CA 根据请求来签署证书</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置-Apache-以使用-SSL"><span class="toc-text">配置 Apache 以使用 SSL</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#激活-SSL-虚拟主机"><span class="toc-text">激活 SSL 虚拟主机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-服务器上测试"><span class="toc-text">web 服务器上测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#吊销证书"><span class="toc-text">吊销证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结论"><span class="toc-text">结论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#后续"><span class="toc-text">后续</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Pursue your own happiness </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        自建CA及颁发SSL证书
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-01-02 21:42:54</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#NET" title="NET">NET</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="基于-Ubuntu-系统下，自建-CA-及颁发-SSL-证书"><a href="#基于-Ubuntu-系统下，自建-CA-及颁发-SSL-证书" class="headerlink" title="基于 Ubuntu 系统下，自建 CA 及颁发 SSL 证书"></a>基于 Ubuntu 系统下，自建 CA 及颁发 SSL 证书</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文参靠的网站：  </p>
+<p>1.<a href="https://segmentfault.com/a/1190000002569859" target="_blank" rel="noopener">基于 OpenSSL 自建 CA 和颁发 SSL 证书</a></p>
+<p>2.<a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-14-04" target="_blank" rel="noopener">How To Create a SSL Certificate on Apache for Ubuntu 14.04</a></p>
+<p>3.<a href="http://www.178linux.com/10705" target="_blank" rel="noopener"> openssl 总结及私有 CA 的搭建</a></p>
+<p>4.<a href="http://blog.csdn.net/linuxnews/article/details/51011443" target="_blank" rel="noopener">搭建私有 CA 服务器</a></p>
+<p>搭建环境：Linux VM-223-65-ubuntu 3.13.0-86-generic</p>
+<h3 id="使用工具-openssl"><a href="#使用工具-openssl" class="headerlink" title="使用工具 openssl"></a>使用工具 openssl</h3><p>openssl 是什么？</p>
+<p>openssl 是一个开源程序的套件、这个套件有三个部分组成：</p>
+<p>一是 libcryto ，这是一个具有通用功能的加密库，里面实现了众多的加密库；</p>
+<p>二是 libssl，这个是实现 ssl 机制的，它是用于实现 TLS/SSL 的功能；</p>
+<p>三是 openssl，是个多功能命令行工具，它可以实现加密解密，甚至还可以当 CA 来用，可以让你创建证书、吊销证书。</p>
+<p>以我的 ubuntu 为例，我的 openssl 的文件目录在  /etc/ssl ，该目录下包含</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cert<span class="selector-class">.pem</span>        软链接到certs/ca-bundle.crt</span><br><span class="line">         </span><br><span class="line">certs/          该服务器上的证书存放目录，可以房子自己的证书和内置证书</span><br><span class="line"></span><br><span class="line">ca-bundle<span class="selector-class">.crt</span>   内置信任的证书</span><br><span class="line"></span><br><span class="line">private    		证书密钥存放目录</span><br><span class="line"></span><br><span class="line">openssl<span class="selector-class">.cnf</span>     openssl 的 CA 主配置文件</span><br><span class="line"></span><br><span class="line">demoCA 		    openssl 的 CA 的证书目录</span><br></pre></td></tr></table></figure>
+<p>demoCA 目录（openssl.cnf 中默认的 CA 目录名）：其下有</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span><span class="type">certs</span>    存放 CA 签署（颁发）过的数字证书（证书备份目录） </span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>     用于存放CA的私钥</span><br><span class="line"></span><br><span class="line">crl         吊销的证书</span><br><span class="line"></span><br><span class="line">serial      签署证书编号文件</span><br><span class="line"></span><br><span class="line">index.txt   证书缩影数据库</span><br></pre></td></tr></table></figure>
+<h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>CA（Certificate Authority）证书颁发机构主要负责证书的颁发、管理以及归档和吊销。证书内包含了拥有证书者的姓名、地址、电子邮件帐号、公钥、证书有效期、发放证书的 CA 、CA 的数字签名等信息。证书主要有三大功能：加密、签名、身份验</p>
+<p>SSL (secure socket layer) 安全套接层，其使用对称加密，非对称加密（公钥加密解密），单向加密解密结合证书实现数据传输安全。</p>
+<h3 id="创建证书"><a href="#创建证书" class="headerlink" title="创建证书"></a>创建证书</h3><h4 id="查看配置文件，了解-CA-环境。"><a href="#查看配置文件，了解-CA-环境。" class="headerlink" title="查看配置文件，了解 CA 环境。"></a>查看配置文件，了解 CA 环境。</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">命令：	vim /etc/ssl/openssl.cnf</span><br><span class="line">	</span><br><span class="line">[ CA_default ]</span><br><span class="line"></span><br><span class="line">dir		= ./demoCA		<span class="comment"># Where everything is kept</span></span><br><span class="line">certs		= $dir/certs		<span class="comment"># Where the issued certs are kept</span></span><br><span class="line">crl_dir		= $dir/crl		<span class="comment"># Where the issued crl are kept</span></span><br><span class="line">database	= $dir/index.txt	<span class="comment"># database index file.</span></span><br><span class="line"><span class="comment">#unique_subject	= no			# Set to 'no' to allow creation of</span></span><br><span class="line">							<span class="comment"># several ctificates with same subject.</span></span><br><span class="line">new_certs_dir	= $dir/newcerts		<span class="comment"># default place for new certs.</span></span><br><span class="line"></span><br><span class="line">certificate	= $dir/cacert.pem 	<span class="comment"># The CA certificate</span></span><br><span class="line">serial		= $dir/serial 		<span class="comment"># The current serial number</span></span><br><span class="line">crlnumber	= $dir/crlnumber	<span class="comment"># the current crl number</span></span><br><span class="line">								<span class="comment"># must be commented out to leave a V1 CRL</span></span><br><span class="line">crl		= $dir/crl.pem 		<span class="comment"># The current CRL</span></span><br><span class="line">private_key	= $dir/<span class="keyword">private</span>/cakey.pem<span class="comment"># The private key</span></span><br><span class="line">RANDFILE	= $dir/<span class="keyword">private</span>/.rand	<span class="comment"># private random number file</span></span><br><span class="line"></span><br><span class="line">default_days	= 365			<span class="comment"># how long to certify for</span></span><br><span class="line">default_crl_days= 30			<span class="comment"># how long before next CRL</span></span><br><span class="line">default_md	= default		<span class="comment"># use public key default MD</span></span><br><span class="line">preserve	= no			<span class="comment"># keep passed DN ordering</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># For the CA policy</span></span><br><span class="line">[ policy_match ]				  注意[ policy_match ]中的设定的匹配规则， 以 CA 根据证书请求来签署证书时报错。</span><br><span class="line">countryName		= match</span><br><span class="line">stateOrProvinceName	= match</span><br><span class="line">organizationName	= match</span><br><span class="line">organizationalUnitName	= optional</span><br><span class="line">commonName		= supplied</span><br><span class="line">emailAddress		= optional</span><br><span class="line"></span><br><span class="line">[ req_distinguished_name ]</span><br><span class="line">countryName			= Country Name (2 letter code)</span><br><span class="line">countryName_default		= AU</span><br><span class="line">countryName_min			= 2</span><br><span class="line">countryName_max			= 2</span><br><span class="line"></span><br><span class="line">stateOrProvinceName		= State or Province Name (full name)</span><br><span class="line">stateOrProvinceName_default	= Some-State</span><br><span class="line"></span><br><span class="line">localityName			= Locality Name (eg, city)</span><br><span class="line"></span><br><span class="line">0.organizationName		= Organization Name (eg, company)</span><br><span class="line">0.organizationName_default	= Internet Widgits Pty Ltd</span><br></pre></td></tr></table></figure>
+<p>通过我自身配置发现，以上参数均可以不必改变，但需要名录文件路径，以免配置过程出现由路径造成的问题。</p>
+<h4 id="初始准备"><a href="#初始准备" class="headerlink" title="初始准备"></a>初始准备</h4><p>创建 demoCA 目录 </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令： <span class="built_in">mkdir</span> demoCA</span><br></pre></td></tr></table></figure>
+<p>进入 demoCA 目录 ，在其下创建：private 目录、newcerts 目录、crl 目录及 index.txt、serial 文件</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">		cd demoCA</span><br><span class="line">		mkdir <span class="keyword">private</span> <span class="keyword">new</span><span class="type">certs</span> crl </span><br><span class="line">		touch index.txt serial</span><br><span class="line">		echo <span class="number">01</span> &gt; serial      	<span class="meta">#设定编号初始值</span></span><br></pre></td></tr></table></figure>
+<h4 id="生成根密钥"><a href="#生成根密钥" class="headerlink" title="生成根密钥"></a>生成根密钥</h4><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">        cd /etc/ssl/demoCA</span><br><span class="line">		openssl genrsa -<span class="keyword">out</span> <span class="keyword">private</span>/cakey.pem <span class="number">2048</span> </span><br><span class="line">	   </span><br><span class="line">		genrsa :生成私钥</span><br><span class="line"></span><br><span class="line">		-<span class="keyword">out</span> ：输出到那里</span><br><span class="line"></span><br><span class="line">		rsa :提取公钥  </span><br><span class="line"></span><br><span class="line">注: 使用命令：( umask <span class="number">077</span>; openssl genrsa -<span class="keyword">out</span> <span class="keyword">private</span>/cakey.pem <span class="number">2048</span> ) 可以使 cakey.pem 私钥文件权限为<span class="number">700</span></span><br></pre></td></tr></table></figure>
+<h4 id="生成根证书"><a href="#生成根证书" class="headerlink" title="生成根证书"></a>生成根证书</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">				<span class="selector-tag">cd</span> /<span class="selector-tag">etc</span>/<span class="selector-tag">ssl</span>/<span class="selector-tag">demoCA</span>     <span class="selector-attr">[可省略]</span></span><br><span class="line">				<span class="selector-tag">openssl</span> <span class="selector-tag">req</span> <span class="selector-tag">-new</span> <span class="selector-tag">-x509</span> <span class="selector-tag">-key</span> <span class="selector-tag">private</span>/<span class="selector-tag">cakey</span><span class="selector-class">.pem</span> <span class="selector-tag">-out</span> <span class="selector-tag">cacert</span><span class="selector-class">.pem</span> </span><br><span class="line">命令解析：	 </span><br><span class="line">				 <span class="selector-tag">req</span>: 生成证书签署请求</span><br><span class="line">				 <span class="selector-tag">-news</span> : 新请求</span><br><span class="line">				 <span class="selector-tag">-key</span>  : 指定私钥文件</span><br><span class="line">				 <span class="selector-tag">-out</span>  : 指定生成证书位置</span><br><span class="line">				 <span class="selector-tag">-x509</span> : 生成自签署证书，并指定证书类型</span><br><span class="line">				 <span class="selector-tag">-days</span> <span class="selector-tag">n</span> : 有效天数	</span><br><span class="line"></span><br><span class="line">		命令效果：（：后为填写内容）</span><br><span class="line"></span><br><span class="line">		<span class="selector-tag">Country</span> <span class="selector-tag">Name</span> (<span class="number">2</span> letter code) <span class="selector-attr">[XX]</span><span class="selector-pseudo">:CN</span>            #国家（大写缩写）</span><br><span class="line">		<span class="selector-tag">State</span> <span class="selector-tag">or</span> <span class="selector-tag">Province</span> <span class="selector-tag">Name</span> (full name) <span class="selector-attr">[]</span><span class="selector-pseudo">:shannxi</span>   #省份或洲</span><br><span class="line">		<span class="selector-tag">Locality</span> <span class="selector-tag">Name</span> (eg, city) <span class="selector-attr">[Default City]</span><span class="selector-pseudo">:xian</span>    #城市</span><br><span class="line">		<span class="selector-tag">Organization</span> <span class="selector-tag">Name</span> (eg, company) <span class="selector-attr">[Default Company Ltd]</span><span class="selector-pseudo">:xiyou</span>   #公司</span><br><span class="line">		<span class="selector-tag">Organizational</span> <span class="selector-tag">Unit</span> <span class="selector-tag">Name</span> (eg, section) <span class="selector-attr">[]</span><span class="selector-pseudo">:linux</span>  #部门    </span><br><span class="line">		<span class="selector-tag">Common</span> <span class="selector-tag">Name</span> (eg, your name or your server's hostname) <span class="selector-attr">[]</span><span class="selector-pseudo">:xxx.xxx.xxx.xxx.</span>#主机</span><br><span class="line">		</span><br><span class="line">		主机必须注意：必须与证书所有者能解析到的名字保持一致（即：你服务器的 <span class="selector-tag">IP</span> 地址或域名），否则将无法通过验证</span><br><span class="line">		</span><br><span class="line">		<span class="selector-tag">Email</span> <span class="selector-tag">Address</span> <span class="selector-attr">[]</span>:                               #邮箱（可以不填）</span><br><span class="line">		</span><br><span class="line">		附：以上操作默认选项可通过修改配置文件（/<span class="selector-tag">etc</span>/<span class="selector-tag">pki</span>/<span class="selector-tag">tls</span>/<span class="selector-tag">openssl</span><span class="selector-class">.cnf</span>）修改</span><br></pre></td></tr></table></figure>
+<h4 id="为服务器生成-ssl-密钥-以-apache-服务器为例"><a href="#为服务器生成-ssl-密钥-以-apache-服务器为例" class="headerlink" title="为服务器生成 ssl 密钥 [ 以 apache 服务器为例 ]"></a>为服务器生成 ssl 密钥 [ 以 apache 服务器为例 ]</h4><p>注：我的 apache 在 /etc/apache2</p>
+<p> 创建 ssl 目录</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">		 <span class="keyword">cd</span> /etc/apache2</span><br><span class="line">		 <span class="keyword">mkdir</span> ssl</span><br><span class="line">		 <span class="keyword">cd</span> ssl</span><br><span class="line">		 openssl genrsa -<span class="keyword">out</span> apache.key 2048</span><br></pre></td></tr></table></figure>
+<h3 id="颁发-SSL-证书"><a href="#颁发-SSL-证书" class="headerlink" title="颁发 SSL 证书"></a>颁发 SSL 证书</h3><h4 id="为-apache-服务器生成证书签署请求"><a href="#为-apache-服务器生成证书签署请求" class="headerlink" title="为 apache 服务器生成证书签署请求"></a>为 apache 服务器生成证书签署请求</h4><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">命令：openssl req -new -key apache.key -<span class="keyword">out</span> apache.csr</span><br><span class="line"></span><br><span class="line">命令解释如上</span><br><span class="line"></span><br><span class="line">注：如果证书的使用者是自己，所填项必须与上面填的一样，负责最后 CA 根据证书请求来签署证书时报错</span><br><span class="line">    若是证书的使用者是别人，除了 Commone <span class="keyword">Name</span> 一定要是你要授予证书的服务器域名或主机名，其它内容随便</span><br><span class="line">	</span><br><span class="line">请注意：两者在最后 CA 根据证书请求来签署证书时，使用的方法不同</span><br><span class="line"></span><br><span class="line">命令效果：（：后为填写内容）     </span><br><span class="line">Country <span class="keyword">Name</span> (<span class="number">2</span> letter code) [AU]:CN					</span><br><span class="line">State <span class="keyword">or</span> Province <span class="keyword">Name</span> (full <span class="keyword">name</span>) [Some-State]:shannxi</span><br><span class="line">Locality <span class="keyword">Name</span> (eg, city) []:xian</span><br><span class="line">Organization <span class="keyword">Name</span> (eg, company) [Internet Widgits Pty Ltd]:xiyou</span><br><span class="line">Organizational <span class="keyword">Unit</span> <span class="keyword">Name</span> (eg, section) []:linux</span><br><span class="line">Common <span class="keyword">Name</span> (e.g. server FQDN <span class="keyword">or</span> YOUR <span class="keyword">name</span>) []:xxx.xxx.xxx.xxx</span><br><span class="line">Email Address []:</span><br><span class="line"></span><br><span class="line">Please enter the following <span class="string">'extra'</span> attributes</span><br><span class="line"><span class="keyword">to</span> be sent <span class="keyword">with</span> your certificate request</span><br><span class="line">A challenge password []:（不填）         #证书请求需要加密存放</span><br><span class="line">An optional company <span class="keyword">name</span> []:（不填）</span><br></pre></td></tr></table></figure>
+<h4 id="CA-根据请求来签署证书"><a href="#CA-根据请求来签署证书" class="headerlink" title="CA 根据请求来签署证书"></a>CA 根据请求来签署证书</h4><p>1.证书的使用者是自己的情况</p>
+<p>把上一步生成的证书请求 csr 文件，发到 CA 服务器上，在CA上执行</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">  	cp apache<span class="selector-class">.csr</span> /etc/ssl</span><br><span class="line">	  cd /etc/ssl</span><br><span class="line">  	openssl ca -<span class="keyword">in</span> apache<span class="selector-class">.csr</span> -out apache.crt</span><br><span class="line"></span><br><span class="line">命令解析：		</span><br><span class="line">	 ca ： CA 证书相关子命令</span><br></pre></td></tr></table></figure>
+<p>openssl ca 默认使用了-cert cacert.pem -keyfile cakey.pem</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">命令效果：</span><br><span class="line">Using configuration from <span class="regexp">/etc/</span>ssl/openssl.cnf</span><br><span class="line">Check that the request matches the signature</span><br><span class="line">Signature ok</span><br><span class="line">Certificate <span class="string">Details:</span></span><br><span class="line">        Serial <span class="string">Number:</span> <span class="number">1</span> (<span class="number">0x1</span>)</span><br><span class="line">        Validity</span><br><span class="line">            Not <span class="string">Before:</span> Dec <span class="number">30</span> <span class="number">08</span>:<span class="number">49</span>:<span class="number">17</span> <span class="number">2015</span> GMT</span><br><span class="line">            Not <span class="string">After :</span> Dec <span class="number">27</span> <span class="number">08</span>:<span class="number">49</span>:<span class="number">17</span> <span class="number">2025</span> GMT</span><br><span class="line"><span class="symbol">        Subject:</span></span><br><span class="line">            countryName               = CN</span><br><span class="line">            stateOrProvinceName       = shannxi</span><br><span class="line">            organizationName          = xiyou</span><br><span class="line">            organizationalUnitName    = linux</span><br><span class="line">            commonName                = xxx.xxx.xxx.xxx</span><br><span class="line">        X509v3 <span class="string">extensions:</span></span><br><span class="line">            X509v3 Basic <span class="string">Constraints:</span> </span><br><span class="line"><span class="symbol">                CA:</span>FALSE</span><br><span class="line">            Netscape <span class="string">Comment:</span> </span><br><span class="line">                OpenSSL Generated Certificate</span><br><span class="line">            X509v3 Subject Key <span class="string">Identifier:</span> </span><br><span class="line"><span class="symbol">                D4:</span><span class="number">83</span>:<span class="string">D5:</span><span class="string">B4:</span><span class="number">54</span>:<span class="number">00</span>:<span class="string">C2:</span><span class="string">FD:</span><span class="string">BC:</span><span class="number">70</span>:<span class="number">52</span>:<span class="string">FD:</span><span class="string">CF:</span><span class="number">74</span>:<span class="number">0</span><span class="string">A:</span><span class="number">69</span>:<span class="number">56</span>:<span class="number">7</span><span class="string">E:</span><span class="number">54</span>:<span class="number">02</span></span><br><span class="line">            X509v3 Authority Key <span class="string">Identifier:</span> </span><br><span class="line"><span class="symbol">                keyid:</span><span class="number">1</span><span class="string">B:</span><span class="string">DB:</span><span class="string">DC:</span><span class="number">36</span>:<span class="number">5</span><span class="string">A:</span><span class="number">82</span>:<span class="string">A5:</span><span class="string">AF:</span><span class="number">1</span><span class="string">A:</span><span class="string">A9:</span><span class="number">9</span><span class="string">C:</span><span class="number">7</span><span class="string">B:</span><span class="number">71</span>:<span class="number">51</span>:<span class="number">54</span>:<span class="number">44</span>:<span class="number">10</span>:<span class="number">31</span>:<span class="string">C3:</span><span class="number">4</span>B</span><br><span class="line"> </span><br><span class="line">Certificate is to be certified until Dec <span class="number">27</span> <span class="number">08</span>:<span class="number">49</span>:<span class="number">17</span> <span class="number">2025</span> GMT (<span class="number">3650</span> days)</span><br><span class="line">Sign the certificate? [y/n]:y</span><br></pre></td></tr></table></figure>
+<p>​     </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 out of 1 certificate requests certified, <span class="keyword">commit</span>? [y/n]y</span><br><span class="line">Write <span class="keyword">out</span> <span class="keyword">database</span> <span class="keyword">with</span> <span class="number">1</span> <span class="keyword">new</span> entries</span><br><span class="line"><span class="keyword">Data</span> Base <span class="keyword">Updated</span></span><br></pre></td></tr></table></figure>
+<p>2.证书的使用者是别人</p>
+<p>把上一步生成的证书请求 csr 文件，发到 CA 服务器上，在CA上执行</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">		cp apache<span class="selector-class">.csr</span> /etc/ssl</span><br><span class="line">		cd /etc/ssl</span><br><span class="line">		openssl x509 -req -<span class="keyword">in</span> apache<span class="selector-class">.csr</span> -CA /etc/ssl/demoCA/cacert<span class="selector-class">.pem</span> -CAkey /etc/ssl/demoCA/private/cakey<span class="selector-class">.pem</span> -CAcreateserial -out apache.crt</span><br><span class="line"></span><br><span class="line">命令效果：</span><br><span class="line">		Check that the request matches the signature</span><br><span class="line">		Signature ok</span><br><span class="line">		Getting private key</span><br></pre></td></tr></table></figure>
+<p>最后将生成的 crt 证书发回 apache 服务器使用</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">		cp  apache.crt <span class="string">/etc/apache2/ssl</span></span><br><span class="line">		<span class="keyword">cd</span>  <span class="string">/etc/apache2/ssl</span></span><br><span class="line">		cat  apache.crt</span><br><span class="line">		<span class="keyword">cd</span>  <span class="string">/etc/apache2</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置-Apache-以使用-SSL"><a href="#配置-Apache-以使用-SSL" class="headerlink" title="配置 Apache 以使用 SSL"></a>配置 Apache 以使用 SSL</h4><p>修改 sites-available 子目录中的 default-ssl.conf 文件</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">	 cd  <span class="meta-keyword">/etc/</span>apache2/sites-available</span><br><span class="line">		sudo  vim  default-ssl.conf</span><br><span class="line"></span><br><span class="line">   修改内容如下：</span><br><span class="line"></span><br><span class="line">	<span class="params">&lt;IfModule mod_ssl.c&gt;</span></span><br><span class="line">	    <span class="params">&lt;VirtualHost _default_:<span class="number">443</span>&gt;</span></span><br><span class="line">	        DocumentRoot <span class="meta-keyword">/var/</span>www/html</span><br><span class="line">	        ErrorLog $&#123;APACHE_LOG_DIR&#125;/error.log</span><br><span class="line">	        CustomLog $&#123;APACHE_LOG_DIR&#125;/access.log combined</span><br><span class="line">	        SSLEngine on</span><br><span class="line">	        SSLCertificateFile <span class="meta-keyword">/etc/</span>apache2<span class="meta-keyword">/ssl/</span>apache.crt                     ***** 需要修改部分</span><br><span class="line">	        SSLCertificateKeyFile <span class="meta-keyword">/etc/</span>apache2<span class="meta-keyword">/ssl/</span>apache.key             ***** 需要修改部分</span><br><span class="line">	        <span class="params">&lt;FilesMatch "\.(cgi|shtml|phtml|php)$"&gt;</span></span><br><span class="line">	                        SSLOptions +StdEnvVars</span><br><span class="line">	        <span class="params">&lt;/FilesMatch&gt;</span></span><br><span class="line">	        <span class="params">&lt;Directory /usr/lib/cgi-bin&gt;</span></span><br><span class="line">	                        SSLOptions +StdEnvVars</span><br><span class="line">	        <span class="params">&lt;/Directory&gt;</span></span><br><span class="line">	        BrowserMatch <span class="string">"MSIE [2-6]"</span> \</span><br><span class="line">	                        nokeepalive ssl-unclean-shutdown \</span><br><span class="line">	                        downgrade<span class="number">-1.0</span> force-response<span class="number">-1.0</span></span><br><span class="line">	        BrowserMatch <span class="string">"MSIE [17-9]"</span> ssl-unclean-shutdown</span><br><span class="line">	    <span class="params">&lt;/VirtualHost&gt;</span></span><br><span class="line">	<span class="params">&lt;/IfModule&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="激活-SSL-虚拟主机"><a href="#激活-SSL-虚拟主机" class="headerlink" title="激活 SSL 虚拟主机"></a>激活 SSL 虚拟主机</h3><p>启用 ssl 虚拟主机：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令：sudo a2ensite <span class="keyword">default</span>-ssl.conf</span><br></pre></td></tr></table></figure>
+<p>重启 apache 服务器：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令：sudo<span class="built_in"> service </span>apache2 restart</span><br></pre></td></tr></table></figure>
+<p>至此自建 CA 及颁发 SSL 证书完成</p>
+<h3 id="web-服务器上测试"><a href="#web-服务器上测试" class="headerlink" title="web 服务器上测试"></a>web 服务器上测试</h3><p>访问你的服务器的域名或公网IP地址，测试配置</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">方法 ：  <span class="keyword">https</span><span class="comment">：// 域名 or IP</span></span><br></pre></td></tr></table></figure>
+<p>你的浏览器无法验证服务器的身份，因为证书并没有别信任证书机构所认证  [浏览器自身识别权威 CA 机构，由于自建证书并未被权威的 CA 的根证书认证，所以会提示“错误证书”]</p>
+<p>证书将无法验证我们的服务器，但证书仍然能够加密通信</p>
+<p>点击“继续访问”，通过查看错误证书，可你看到证书的相关信息</p>
+<p>并且连接是加密。</p>
+<h3 id="吊销证书"><a href="#吊销证书" class="headerlink" title="吊销证书"></a>吊销证书</h3><p>客户端获取证书 serial</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">	cd /etc/apache2/ssl</span><br><span class="line">	openssl x509 -<span class="keyword">in</span> apache<span class="selector-class">.crt</span> -noout -serial -subject</span><br></pre></td></tr></table></figure>
+<p>CA 吊销证书</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">	cd <span class="regexp">/etc/</span>ssl<span class="regexp">/demoCA/</span>newcerts</span><br><span class="line">	openssl ca -revoke <span class="number">01</span>.pem</span><br></pre></td></tr></table></figure>
+<p>CA 生成吊销证书编号</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">命令：</span><br><span class="line">	<span class="keyword">cd</span> <span class="string">/etc/ssl/demoCA</span></span><br><span class="line">	<span class="keyword">echo</span> 01 &gt; crlnumber</span><br></pre></td></tr></table></figure>
+<p>CA 更新证书吊销列表</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">命令:</span><br><span class="line">	<span class="keyword">cd</span> crl</span><br><span class="line">	openssl <span class="keyword">ca</span> -gencrl -<span class="keyword">out</span> <span class="keyword">ca</span>.crl</span><br></pre></td></tr></table></figure>
+<p>查看 crl 文件的内容</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令：openssl crl -<span class="keyword">in</span> /path/<span class="keyword">to</span>/crlfile.crl -noout -<span class="built_in">text</span></span><br></pre></td></tr></table></figure>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>SSL 有助于确保站点和访客之间的通信，但是会对每个访客都会警告浏览器无法验证证书的有效性。</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>以上就是小宝自建 CA 及颁发 SSL 证书的过程，可能其中还存在很大的知识漏洞，但小宝愿意弥补自己的不足，不断进步。</p>
+<p>最后希望各位大牛多多纠正小宝的错误，而同小宝一样是小白的朋友看本文过能自己有所帮助。</p>
+<p>泞小宝，最求自己的快乐，这就够了。</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank" href="https://github.com/Ningxiaobao">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
